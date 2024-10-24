@@ -20,4 +20,3 @@ def get_children(state):
         children.append((int(new_state), 'up'))
 
     return children
-    
