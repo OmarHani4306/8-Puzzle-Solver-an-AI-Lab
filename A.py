@@ -19,9 +19,23 @@ def compute_heuristic(current_state_int, goal_positions, heuristic_type='manhatt
             total_distance += abs(current_pos[0] - goal_pos[0]) + abs(current_pos[1] - goal_pos[1])
         elif heuristic_type == 'euclidean':
             total_distance += math.sqrt((current_pos[0] - goal_pos[0])**2 + (current_pos[1] - goal_pos[1])**2)
-        print(current_index, current_pos, goal_pos)
-    print(total_distance)
+        # print(current_index, current_pos, goal_pos)
+    # print(total_distance)
     return total_distance
+
+def decrease_key(heap, old_value, new_value):
+    # Find the index of the old_value
+    index = heap.index(old_value)
+
+    # Replace the old value with the new one
+    heap[index] = new_value
+
+    # Restore the heap property
+    # If new_value is smaller, sift up; otherwise, sift down
+    if new_value < old_value:
+        heapq._siftup(heap, index)
+    else:
+        heapq._siftdown(heap, 0, index)
 
 def A(state, mode='manhattan'):
 
@@ -87,18 +101,23 @@ def A(state, mode='manhattan'):
             if child in visited:
                 continue   
             # adding deacrese ket to optimize
+
+            # if child in frointer:
+                # decrease_key(chi)
             h = compute_heuristic(child, goal_positions, mode)
             new_path = path[:]
             new_path.append(direction)
 
-            heapq.heappush(frointer, (1+h, depth+1, child, new_path))
+            heapq.heappush(frointer, (depth+1+h, depth+1, child, new_path))
 
     return [], 0, 0, 0, 0.0
 
 def main():
     # Example initial state of the puzzle (as an integer)
     # initial_state = 806547231  
-    initial_state = 120345678  
+    # initial_state = 120345678  
+    initial_state = 182043765  
+    
     # Run the A* algorithm
     # path, cost, no_of_expanded_nodes, max_depth, elapsed_time = A(initial_state, 'euclidean')
     path, cost, no_of_expanded_nodes, max_depth, elapsed_time = A(initial_state)
