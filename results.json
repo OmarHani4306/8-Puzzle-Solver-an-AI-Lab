@@ -1,0 +1,61 @@
+[
+    {
+        "initial_state": 120345678,
+        "path_to_solution": [
+            "left",
+            "left"
+        ],
+        "cost_of_path": 2,
+        "number_of_expanded_nodes": 3,
+        "maximum_search_depth_reached": 2,
+        "running_time_seconds": 5.2928924560546875e-05
+    },
+    {
+        "initial_state": 806547231,
+        "path_to_solution": [
+            "left",
+            "down",
+            "down",
+            "right",
+            "up",
+            "up",
+            "left",
+            "down",
+            "down",
+            "right",
+            "up",
+            "right",
+            "up",
+            "left",
+            "down",
+            "right",
+            "down",
+            "left",
+            "up",
+            "up",
+            "left",
+            "down",
+            "down",
+            "right",
+            "up",
+            "right",
+            "up",
+            "left",
+            "down",
+            "left",
+            "up"
+        ],
+        "cost_of_path": 31,
+        "number_of_expanded_nodes": 71,
+        "maximum_search_depth_reached": 31,
+        "running_time_seconds": 0.0005557537078857422
+    },
+    {
+        "initial_state": 123804765,
+        "path_to_solution": [],
+        "cost_of_path": 0,
+        "number_of_expanded_nodes": 0,
+        "maximum_search_depth_reached": 0,
+        "running_time_seconds": 0.0
+    }
+]
