@@ -15,17 +15,15 @@ def compute_heuristic(current_state_int, goal_positions, heuristic_type='manhatt
         current_index = int(current_state_str[i])  # Find the index of the tile
         current_pos = goal_positions[current_index]  # Calculate its position
         goal_pos = goal_positions[i]  # Get the goal position from pre-computed dict
-        
         if heuristic_type == 'manhattan':
-            # Manhattan distance: sum of absolute differences
             total_distance += abs(current_pos[0] - goal_pos[0]) + abs(current_pos[1] - goal_pos[1])
         elif heuristic_type == 'euclidean':
-            # Euclidean distance: sqrt of sum of squared differences
             total_distance += math.sqrt((current_pos[0] - goal_pos[0])**2 + (current_pos[1] - goal_pos[1])**2)
-
+        print(current_index, current_pos, goal_pos)
+    print(total_distance)
     return total_distance
 
-def A(state):
+def A(state, mode='manhattan'):
 
     goal_state = 12345678
 
@@ -89,7 +87,7 @@ def A(state):
             if child in visited:
                 continue   
             # adding deacrese ket to optimize
-            h = compute_heuristic(child, goal_positions, 'manhattan')
+            h = compute_heuristic(child, goal_positions, mode)
             new_path = path[:]
             new_path.append(direction)
 
@@ -99,9 +97,10 @@ def A(state):
 
 def main():
     # Example initial state of the puzzle (as an integer)
-    initial_state = 120345678  # Change this to test different scenarios
-    
+    # initial_state = 806547231  
+    initial_state = 120345678  
     # Run the A* algorithm
+    # path, cost, no_of_expanded_nodes, max_depth, elapsed_time = A(initial_state, 'euclidean')
     path, cost, no_of_expanded_nodes, max_depth, elapsed_time = A(initial_state)
 
     # Output the results

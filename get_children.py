@@ -18,5 +18,5 @@ def get_children(state):
     if zero_index not in {0, 1, 2}:  
         new_state = state[:zero_index - 3] + state[zero_index] + state[zero_index - 2:zero_index] + state[zero_index - 3] + state[zero_index + 1:]
         children.append((int(new_state), 'up'))
-    print(children)
+
     return children
