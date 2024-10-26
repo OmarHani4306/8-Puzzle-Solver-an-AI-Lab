@@ -1,1 +1,1 @@
-display_message("")
+from check_game import check_game

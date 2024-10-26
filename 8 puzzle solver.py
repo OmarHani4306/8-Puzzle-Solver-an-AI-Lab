@@ -18,10 +18,10 @@ def update_puzzle_display(puzzle_state):
                 bg="white" if tile_value != '0' else "skyblue"
             )
 
-def animate_solution(path, puzzle):
+def animate_solution(path, puzzle, algorithm_name):
     puzzle_list = [list(puzzle[i:i + 3]) for i in range(0, 9, 3)]
     display_message("")
-    display_final_results([], 0, 0, 0, 0.0)
+    display_final_results([], 0, 0, 0, 0.0, algorithm_name)
     if not path:
         display_message("No moves needed. The puzzle is already in the solved state.")
         update_puzzle_display(puzzle)
@@ -53,7 +53,7 @@ def run_algorithm(algorithm):
             puzzle_input += value
     puzzle = int(puzzle_input)
     if not check_game(puzzle):
-        display_final_results([], 0, 0, 0, 0.0)
+        display_final_results([], 0, 0, 0, 0.0, algorithm)
         display_message("The puzzle is not solvable.", error=True)
         return
     try:
@@ -63,23 +63,26 @@ def run_algorithm(algorithm):
             path, cost_of_path, nodes_expanded, search_depth, running_time = bfs(puzzle)
         elif algorithm == "IDS":
             path, cost_of_path, nodes_expanded, search_depth, running_time = ids(puzzle)
-        elif algorithm == "A*":
-            path, cost_of_path, nodes_expanded, search_depth, running_time = A(puzzle)
+        elif algorithm == "A*_Manhattan":
+            path, cost_of_path, nodes_expanded, search_depth, running_time = A(puzzle, heuristic="manhattan")
+        elif algorithm == "A*_Euclidean":
+            path, cost_of_path, nodes_expanded, search_depth, running_time = A(puzzle, heuristic="euclidean")
         else:
             display_message("Unknown algorithm selected.", error=True)
             return
-        animate_solution(path, puzzle_input)
-        display_final_results(path, search_depth, cost_of_path, nodes_expanded, running_time)
+        animate_solution(path, puzzle_input, algorithm)
+        display_final_results(path, search_depth, cost_of_path, nodes_expanded, running_time, algorithm)
     except Exception as e:
         display_message(f"Error: {str(e)}", error=True)
 
-def display_final_results(path, search_depth, cost_of_path, nodes_expanded, running_time):
+def display_final_results(path, search_depth, cost_of_path, nodes_expanded, running_time, algorithm_name):
     results_text = f"""
+    Algorithm: {algorithm_name}
     Path : {', '.join(path)}
     Cost of Path : {cost_of_path}
     Search depth : {search_depth}
     Number of Nodes Expanded: {nodes_expanded}
-    Running Time : {running_time:.4f} seconds
+    Running Time : {running_time:.9f} seconds
     """
     results_label.config(text=results_text)
 
@@ -110,10 +113,11 @@ for i in range(3):
 button_frame = tk.Frame(root)
 button_frame.pack(pady=10)
 
-algorithm_buttons = [("DFS", "DFS"), ("BFS", "BFS"), ("IDS", "IDS"), ("A*", "A*")]
+algorithm_buttons = [("DFS", "DFS"), ("BFS", "BFS"), ("IDS", "IDS"), 
+                     ("A* (Manhattan)", "A*_Manhattan"), ("A* (Euclidean)", "A*_Euclidean")]    
 
 for index, (text, algorithm) in enumerate(algorithm_buttons):
-    button = tk.Button(button_frame, text=text, command=lambda alg=algorithm: run_algorithm(alg), width=8, height=1, font=("Comic Sans MS", 12, "bold"))
+    button = tk.Button(button_frame, text=text, command=lambda alg=algorithm: run_algorithm(alg), width=15, height=1, font=("Comic Sans MS", 12, "bold"))
     button.grid(row=0, column=index, padx=5)
 
 message_label = tk.Label(root, text="", font=("Comic Sans MS", 12), padx=10, pady=10)

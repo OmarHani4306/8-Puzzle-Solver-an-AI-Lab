@@ -5,7 +5,7 @@ from get_children import get_children
 # Note: get_children returns all available states that can be reached by moving the zero tile, along with the direction of the move required to reach each state.
 # The state is an integer representing the puzzle, for example, 123456780 or 170245683.
 
-def A(state):
+def A(state, heuristic = "manhattan"):
 
     goal_state = 12345678
 
