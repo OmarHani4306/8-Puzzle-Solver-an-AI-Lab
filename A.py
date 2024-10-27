@@ -8,30 +8,24 @@ from get_children import get_children
 def compute_heuristic(current_state_int, goal_positions, heuristic_type='manhattan'):
     total_distance = 0
     
-    # Convert the current state to a string and pad with zeros
-    current_state_str = str(current_state_int).zfill(9)  # Ensure it has 9 digits
+    current_state_str = str(current_state_int).zfill(9)  
     
-    for i in range(0, 9):  # Exclude the empty tile (0)
-        current_index = int(current_state_str[i])  # Find the index of the tile
-        current_pos = goal_positions[current_index]  # Calculate its position
-        goal_pos = goal_positions[i]  # Get the goal position from pre-computed dict
+    for i in range(0, 9):  
+        current_index = int(current_state_str[i])  
+        current_pos = goal_positions[current_index]  
+        goal_pos = goal_positions[i]  
         if heuristic_type == 'manhattan':
             total_distance += abs(current_pos[0] - goal_pos[0]) + abs(current_pos[1] - goal_pos[1])
         elif heuristic_type == 'euclidean':
             total_distance += math.sqrt((current_pos[0] - goal_pos[0])**2 + (current_pos[1] - goal_pos[1])**2)
-        # print(current_index, current_pos, goal_pos)
-    # print(total_distance)
+
     return total_distance
 
 def decrease_key(heap, old_value, new_value):
-    # Find the index of the old_value
     index = heap.index(old_value)
 
-    # Replace the old value with the new one
     heap[index] = new_value
 
-    # Restore the heap property
-    # If new_value is smaller, sift up; otherwise, sift down
     if new_value < old_value:
         heapq._siftup(heap, index)
     else:
