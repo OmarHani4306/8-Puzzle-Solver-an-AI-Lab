@@ -11,8 +11,6 @@ def ids(state):
     #########################################################
     # Implement the ids algorithm logic starting from below #
     #########################################################
-
-    def ids(state):
     limit = 0
     while True:
         result = dls(state, limit)
