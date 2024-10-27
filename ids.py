@@ -1,7 +1,4 @@
-import time
-
-from get_children import get_children
-
+from dls import dls
 # Note: get_children returns all available states that can be reached by moving the zero tile, along with the direction of the move required to reach each state.
 # The state is an integer representing the puzzle, for example, 123456780 or 170245683.
 
@@ -15,6 +12,13 @@ def ids(state):
     # Implement the ids algorithm logic starting from below #
     #########################################################
 
+    def ids(state):
+    limit = 0
+    while True:
+        result = dls(state, limit)
+        if result is not None:  # If a solution is found
+            return result
+        limit += 1  
 
     # outputs to return once implemented:
     # 1. Return the list of directions, e.g., ["up", "left", "down"]
