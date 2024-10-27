@@ -98,8 +98,11 @@ def A(state, mode='manhattan'):
 def main():
     # Example initial state of the puzzle (as an integer)
     # initial_state = 806547231  
-    initial_state = 120345678  
-    initial_state = 123804765
+    # initial_state = 120345678  
+    # initial_state = 35428617
+    initial_state = 725310648
+
+
     # Run the A* algorithm
     # path, cost, no_of_expanded_nodes, max_depth, elapsed_time = A(initial_state, 'euclidean')
     path, cost, no_of_expanded_nodes, max_depth, elapsed_time = A(initial_state)
