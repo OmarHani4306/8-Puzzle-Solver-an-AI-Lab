@@ -63,8 +63,10 @@ def run_algorithm(algorithm):
             path, cost_of_path, nodes_expanded, search_depth, running_time = bfs(puzzle)
         elif algorithm == "IDS":
             path, cost_of_path, nodes_expanded, search_depth, running_time = ids(puzzle)
-        elif algorithm == "A*":
-            path, cost_of_path, nodes_expanded, search_depth, running_time = A(puzzle)
+        elif algorithm == "A* Manhattan":
+            path, cost_of_path, nodes_expanded, search_depth, running_time = A(puzzle, "manhattan")
+        elif algorithm == "A* Euclidean":
+            path, cost_of_path, nodes_expanded, search_depth, running_time = A(puzzle, "euclidean")
         else:
             display_message("Unknown algorithm selected.", error=True)
             return
@@ -110,10 +112,16 @@ for i in range(3):
 button_frame = tk.Frame(root)
 button_frame.pack(pady=10)
 
-algorithm_buttons = [("DFS", "DFS"), ("BFS", "BFS"), ("IDS", "IDS"), ("A*", "A*")]
+algorithm_buttons = [
+    ("DFS", "DFS"), 
+    ("BFS", "BFS"), 
+    ("IDS", "IDS"), 
+    ("A* Manhattan", "A* Manhattan"), 
+    ("A* Euclidean", "A* Euclidean")
+]
 
 for index, (text, algorithm) in enumerate(algorithm_buttons):
-    button = tk.Button(button_frame, text=text, command=lambda alg=algorithm: run_algorithm(alg), width=8, height=1, font=("Comic Sans MS", 12, "bold"))
+    button = tk.Button(button_frame, text=text, command=lambda alg=algorithm: run_algorithm(alg), width=12, height=1, font=("Comic Sans MS", 12, "bold"))
     button.grid(row=0, column=index, padx=5)
 
 message_label = tk.Label(root, text="", font=("Comic Sans MS", 12), padx=10, pady=10)
