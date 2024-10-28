@@ -31,7 +31,7 @@ def A(state, mode='manhattan'):
     }
 
     frontier = makefheap()
-    visited = set()
+    visited = {}
     max_depth = 0
     no_of_expanded_nodes = 0
     start_time = time.time()
@@ -45,13 +45,13 @@ def A(state, mode='manhattan'):
         if current_state == goal_state:
             end_time = time.time()
             return path, depth, no_of_expanded_nodes, max_depth, end_time - start_time
-        visited.add(current_state)
+        visited[current_state] = depth
         max_depth = max(depth, max_depth)
         no_of_expanded_nodes += 1
         
         children_direction = get_children(current_state)
         for child, direction in children_direction:
-            if child in visited:
+            if child in visited and visited[child] <= depth + 1:
                 continue
 
             h = compute_heuristic(child, goal_positions, mode)
