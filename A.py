@@ -70,7 +70,6 @@ def A(state, mode='manhattan'):
 
     no_of_expanded_nodes = 0
 
-    # cost, depth, current_state, path, h = 0, 0, state, [], 0
 
     start_time = time.time()
 
@@ -110,11 +109,11 @@ def A(state, mode='manhattan'):
 def main():
     test_cases = [
         (806547231, 31),
-        (641302758, 14),
-        (158327064, 12),
-        (328451670, 12),
-        (35428617, 10),  # Removed the leading zero for Python integer format
-        (725310648, 15)
+        # (641302758, 14),
+        # (158327064, 12),
+        # (328451670, 12),
+        # (35428617, 10),  # Removed the leading zero for Python integer format
+        # (725310648, 15)
     ]
 
     for initial_state, expected_moves in test_cases:

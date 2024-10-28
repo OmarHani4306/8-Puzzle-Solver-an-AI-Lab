@@ -9,8 +9,6 @@ def compute_heuristic(current_state_int, goal_positions, heuristic_type='manhatt
     
     for i in range(9):
         current_index = int(current_state_str[i])
-        if current_index == 0:
-            continue
         current_pos = goal_positions[current_index]
         goal_pos = goal_positions[i]
         if heuristic_type == 'manhattan':
@@ -31,7 +29,7 @@ def A(state, mode='manhattan'):
     }
 
     frontier = makefheap()
-    visited = {}
+    visited = set()
     max_depth = 0
     no_of_expanded_nodes = 0
     start_time = time.time()
@@ -42,19 +40,16 @@ def A(state, mode='manhattan'):
 
         cost, depth, current_state, path = fheappop(frontier)
 
-        if current_state in visited and visited[current_state] <= depth:
-            continue
-        
         if current_state == goal_state:
             end_time = time.time()
             return path, depth, no_of_expanded_nodes, max_depth, end_time - start_time
-        visited[current_state] = depth
+        visited.add(current_state)
         max_depth = max(depth, max_depth)
         no_of_expanded_nodes += 1
         
         children_direction = get_children(current_state)
         for child, direction in children_direction:
-            if child in visited and visited[child] <= depth + 1:
+            if child in visited:
                 continue
 
             h = compute_heuristic(child, goal_positions, mode)
@@ -65,11 +60,11 @@ def A(state, mode='manhattan'):
 
 def main():
     test_cases = [
-        # (806547231, 31),
+        (806547231, 31),
         # (641302758, 14),
         # (158327064, 12),
         # (328451670, 12),
-        (35428617, 10),  # Removed the leading zero for Python integer format
+        # (35428617, 10),  # Removed the leading zero for Python integer format
         # (725310648, 15)
     ]
 

@@ -1,7 +1,7 @@
 import json
 from A import A
 import A_normal 
-import a_star_opt
+import A_fib_heap
 
 test_cases = [
     (806547231, 31),
@@ -18,7 +18,7 @@ def run_test(file, initial_state):
     elif file == "A_normal":
         return A_normal.A(initial_state)
     elif file == "A_fib_heap":
-        return a_star_opt.A(initial_state)
+        return A_fib_heap.A(initial_state)
 
 results = []
 
