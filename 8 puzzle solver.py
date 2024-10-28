@@ -18,10 +18,10 @@ def update_puzzle_display(puzzle_state):
                 bg="white" if tile_value != '0' else "skyblue"
             )
 
-def animate_solution(path, puzzle):
+def animate_solution(path, puzzle, algorithm_name):
     puzzle_list = [list(puzzle[i:i + 3]) for i in range(0, 9, 3)]
     display_message("")
-    display_final_results([], 0, 0, 0, 0.0)
+    display_final_results([], 0, 0, 0, 0.0, algorithm_name)
     if not path:
         display_message("No moves needed. The puzzle is already in the solved state.")
         update_puzzle_display(puzzle)
@@ -70,18 +70,39 @@ def run_algorithm(algorithm):
         else:
             display_message("Unknown algorithm selected.", error=True)
             return
-        animate_solution(path, puzzle_input)
-        display_final_results(path, search_depth, cost_of_path, nodes_expanded, running_time)
+
+        if algorithm not in ["DFS", "IDS"]:
+            animate_solution(path, puzzle_input, algorithm)  
+        else:
+            final_state = puzzle_input
+            for move in path:
+                zero_index = final_state.index('0')
+                zero_row, zero_col = divmod(zero_index, 3)
+                final_state_list = [list(final_state[i:i + 3]) for i in range(0, 9, 3)]
+                if move == "up" and zero_row > 0:
+                    final_state_list[zero_row][zero_col], final_state_list[zero_row - 1][zero_col] = final_state_list[zero_row - 1][zero_col], final_state_list[zero_row][zero_col]
+                elif move == "down" and zero_row < 2:
+                    final_state_list[zero_row][zero_col], final_state_list[zero_row + 1][zero_col] = final_state_list[zero_row + 1][zero_col], final_state_list[zero_row][zero_col]
+                elif move == "left" and zero_col > 0:
+                    final_state_list[zero_row][zero_col], final_state_list[zero_row][zero_col - 1] = final_state_list[zero_row][zero_col - 1], final_state_list[zero_row][zero_col]
+                elif move == "right" and zero_col < 2:
+                    final_state_list[zero_row][zero_col], final_state_list[zero_row][zero_col + 1] = final_state_list[zero_row][zero_col + 1], final_state_list[zero_row][zero_col]
+                final_state = ''.join(sum(final_state_list, []))
+            update_puzzle_display(final_state)
+
+        display_final_results(path, search_depth, cost_of_path, nodes_expanded, running_time, algorithm)
     except Exception as e:
         display_message(f"Error: {str(e)}", error=True)
 
-def display_final_results(path, search_depth, cost_of_path, nodes_expanded, running_time):
+
+def display_final_results(path, search_depth, cost_of_path, nodes_expanded, running_time, algorithm_name):
     results_text = f"""
+    Algorithm: {algorithm_name}
     Path : {', '.join(path)}
     Cost of Path : {cost_of_path}
     Search depth : {search_depth}
     Number of Nodes Expanded: {nodes_expanded}
-    Running Time : {running_time:.4f} seconds
+    Running Time : {running_time:.9f} seconds
     """
     results_label.config(text=results_text)
 
