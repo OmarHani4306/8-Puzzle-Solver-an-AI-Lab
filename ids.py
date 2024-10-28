@@ -25,4 +25,4 @@ def ids(state):
     # 4. Return the maximum search depth reached
     # 5. Return the running time in seconds
 
-    return [], 0, 0, 0, 0.0
+
