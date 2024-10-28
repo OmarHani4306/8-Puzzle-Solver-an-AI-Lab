@@ -28,6 +28,7 @@ def dfs(state):
     parent_map = {state: (None, None)}  # Track parent and direction for path reconstruction
     max_depth_reached = 0
     nodes_expanded = 0
+    forienter = set()  
 
     while stack:
         current_state, current_cost = stack.pop()
@@ -43,7 +44,7 @@ def dfs(state):
         children_direction = get_children(current_state)
 
         for child, direction in children_direction:
-            if child in visited:
+            if child in visited or child in forienter:
                 continue
 
             # Record the parent and direction for reconstructing the path later
@@ -58,6 +59,7 @@ def dfs(state):
                 return path, current_cost + 1, nodes_expanded, max(max_depth_reached, current_cost + 1), running_time
 
             # Add child to stack for further exploration, only state and cost
+            forienter.add(child)
             stack.append([child, current_cost + 1])
 
     return None
