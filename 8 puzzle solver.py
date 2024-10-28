@@ -94,7 +94,6 @@ def run_algorithm(algorithm):
     except Exception as e:
         display_message(f"Error: {str(e)}", error=True)
 
-
 def display_final_results(path, search_depth, cost_of_path, nodes_expanded, running_time, algorithm_name):
     results_text = f"""
     Algorithm: {algorithm_name}
@@ -148,7 +147,21 @@ for index, (text, algorithm) in enumerate(algorithm_buttons):
 message_label = tk.Label(root, text="", font=("Comic Sans MS", 12), padx=10, pady=10)
 message_label.pack(pady=10)
 
-results_label = tk.Label(root, text="", font=("Comic Sans MS", 12), justify="left", padx=10, pady=10)
-results_label.pack(pady=5)
+# Create canvas for scrolling results
+results_canvas = tk.Canvas(root, height=200, width=1000)
+results_frame = tk.Frame(results_canvas)
+results_scrollbar_y = tk.Scrollbar(root, orient="vertical", command=results_canvas.yview)
+results_scrollbar_x = tk.Scrollbar(root, orient="horizontal", command=results_canvas.xview)
+results_canvas.configure(yscrollcommand=results_scrollbar_y.set, xscrollcommand=results_scrollbar_x.set)
+
+results_scrollbar_y.pack(side="right", fill="y")
+results_scrollbar_x.pack(side="bottom", fill="x")
+results_canvas.pack()
+results_canvas.create_window((0, 0), window=results_frame, anchor="nw")
+
+results_label = tk.Label(results_frame, font=("Comic Sans MS", 12), justify="left")
+results_label.pack()
+
+results_frame.bind("<Configure>", lambda e: results_canvas.configure(scrollregion=results_canvas.bbox("all")))
 
 root.mainloop()
