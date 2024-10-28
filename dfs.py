@@ -39,6 +39,8 @@ def dfs(state):
 
         children_direction = get_children(current_state)
 
+        max_depth_reached = max(max_depth_reached, current_cost)
+
         nodes_expanded += 1
 
         for child, direction in children_direction:
@@ -65,8 +67,8 @@ def dfs(state):
 
 def main():
     test_cases = [
-        # (806547231, 31),
-        (123405678, 40188),
+        (806547231, 31),
+        # (123405678, 40188),
         # (120345678, 2),
         # (641302758, 14),
         # (158327064, 12),
