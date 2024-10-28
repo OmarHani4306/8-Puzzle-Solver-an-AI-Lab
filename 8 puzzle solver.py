@@ -134,7 +134,7 @@ button_frame = tk.Frame(root)
 button_frame.pack(pady=10)
 
 algorithm_buttons = [("DFS", "DFS"), ("BFS", "BFS"), ("IDS", "IDS"), 
-                     ("A* (Manhattan)", "A*_Manhattan"), ("A* (Euclidean)", "A*_Euclidean")]    
+                     ("A* (Manhattan)", "A* Manhattan"), ("A* (Euclidean)", "A* Euclidean")]    
 
 for index, (text, algorithm) in enumerate(algorithm_buttons):
     button = tk.Button(button_frame, text=text, command=lambda alg=algorithm: run_algorithm(alg), width=15, height=1, font=("Comic Sans MS", 12, "bold"))
