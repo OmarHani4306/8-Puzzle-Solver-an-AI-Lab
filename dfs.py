@@ -4,46 +4,44 @@ from extract_path import extract_path
 
 def dfs(state):
     goal_state = 12345678  # Goal configuration
-
     if state == goal_state:
         return [], 0, 0, 0, 0.0  # Return immediately if already solved
 
     start = time.time()
-
-    # Use a stack-like structure: LIFO behavior by popping from the end
-    stack = [[[state, "", 0]]]  
+    stack = [[[state, "", 0]]]  # Initialize stack for LIFO behavior
     visited = set()  # Track visited states to avoid cycles
-    max_depth = 0  # Initialize max depth
+    max_depth_reached = 0
+    nodes_expanded = 0
 
-    while stack:  # While there are states to explore
-        current_path = stack.pop()  # Pop from the end (LIFO)
+    while stack:
+        current_path = stack.pop()
         current_state = current_path[-1][0]
-        current_cost = current_path[-1][-1]  # Current path cost represents depth
+        current_cost = current_path[-1][2]
 
-        # Update the max depth reached so far
-        max_depth = max(max_depth, current_cost )
+        # Update the maximum depth reached
+        max_depth_reached = max(max_depth_reached, current_cost)
+        nodes_expanded += 1
 
-        visited.add(current_state)  # Mark as visited
+        # Mark the current state as visited
+        visited.add(current_state)
 
         # Generate possible moves (children)
         children_direction = get_children(current_state)
 
         for child, direction in children_direction:
-            if child == goal_state:  # Check if goal state is found
+            if child == goal_state:  # Check if the goal state is found
                 end = time.time()
                 running_time = end - start
 
+                # Extract the path to the goal state
                 path = extract_path(current_path + [[child, direction, current_cost + 1]])
-                nodes_expanded = len(visited)
+                return path, current_cost + 1, nodes_expanded, max(max_depth_reached, current_cost + 1), running_time
 
-                return path, current_cost + 1, nodes_expanded, max(max_depth, current_cost + 1) , running_time
-
-            if child in visited:  # Skip if already visited
+            if child in visited:  # Skip if the child state has already been visited
                 continue
-
-            # Add the new path to the stack
+            
+            # Add the new path to the stack for further exploration
             new_path = current_path + [[child, direction, current_cost + 1]]
-            stack.append(new_path)  # Push to the end for LIFO behavior
+            stack.append(new_path)
 
-    # If no solution is found
-    return [], 0, 0, max_depth, 0.0
+    return None
