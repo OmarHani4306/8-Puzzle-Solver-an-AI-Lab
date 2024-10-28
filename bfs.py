@@ -33,7 +33,7 @@ def bfs(state):
                 path = extract_path(current_path + [[child, direction, current_cost + 1]])
                 nodes_expanded = len(visited)
                 
-                return path, current_cost + 1, nodes_expanded, current_cost + 1, running_time   
+                return path, current_cost + 1, nodes_expanded, current_cost + 1, running_time        
 
             if child in visited or child in forienter:
                 continue
