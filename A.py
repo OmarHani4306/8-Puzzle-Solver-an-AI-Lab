@@ -9,6 +9,8 @@ def compute_heuristic(current_state_int, goal_positions, heuristic_type='manhatt
     
     for i in range(9):
         current_index = int(current_state_str[i])
+        if current_index == 0:
+            continue
         current_pos = goal_positions[current_index]
         goal_pos = goal_positions[i]
         if heuristic_type == 'manhattan':
@@ -29,24 +31,22 @@ def A(state, mode='manhattan'):
     }
 
     frontier = heapdict()
-    visited = {}
+    visited = set()
     max_depth = 0
     no_of_expanded_nodes = 0
     start_time = time.time()
 
-    initial_heuristic = compute_heuristic(state, goal_positions, mode)
-    frontier[state] = initial_heuristic  # state as the key, heuristic as the priority
+    frontier[state] =  0, 0, [] # state as the key, heuristic as the priority
 
     while frontier:
-        current_state, cost = frontier.popitem()
-        depth = cost - compute_heuristic(current_state, goal_positions, mode)
-        path = visited.get(current_state, [])
-
+        # print(frontier.heap[0])
+        current_state, status = frontier.popitem()
+        cost, depth, path = status
         if current_state == goal_state:
             end_time = time.time()
             return path, depth, no_of_expanded_nodes, max_depth, end_time - start_time
 
-        visited[current_state] = path
+        visited.add(current_state)
         max_depth = max(depth, max_depth)
         no_of_expanded_nodes += 1
 
@@ -57,24 +57,9 @@ def A(state, mode='manhattan'):
 
             h = compute_heuristic(child, goal_positions, mode)
             new_path = path + [direction]
-            cost_to_child = depth + 1 + h
-            if child not in frontier or cost_to_child < frontier[child]:
-                frontier[child] = cost_to_child
-                visited[child] = new_path
+            frontier[child] = (depth + 1 + h, depth+1, new_path)
 
     return [], 0, 0, 0, 0.0
-
-def main():
-    initial_state = 182043765
-    path, cost, no_of_expanded_nodes, max_depth, elapsed_time = A(initial_state)
-    print("Path to solution:", path)
-    print("Cost of path (number of moves):", cost)
-    print("Number of expanded nodes:", no_of_expanded_nodes)
-    print("Maximum search depth reached:", max_depth)
-    print("Running time (seconds):", elapsed_time)
-
-if __name__ == "__main__":
-    main()
 
 def main():
     test_cases = [
