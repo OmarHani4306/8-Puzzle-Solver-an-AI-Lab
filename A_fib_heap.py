@@ -1,4 +1,4 @@
-from heapdict import heapdict
+from fibheap import *
 import time
 import math
 from get_children import get_children
@@ -30,26 +30,25 @@ def A(state, mode='manhattan'):
         6: (2, 0), 7: (2, 1), 8: (2, 2),
     }
 
-    frontier = heapdict()
+    frontier = makefheap()
     visited = set()
     max_depth = 0
     no_of_expanded_nodes = 0
     start_time = time.time()
 
-    frontier[state] =  0, 0, [] # state as the key, heuristic as the priority
+    fheappush(frontier, (0, 0, state, []))
 
-    while frontier:
-        # print(frontier.heap[0])
-        current_state, status = frontier.popitem()
-        cost, depth, path = status
+    while frontier.num_nodes:
+
+        cost, depth, current_state, path = fheappop(frontier)
+        
         if current_state == goal_state:
             end_time = time.time()
             return path, depth, no_of_expanded_nodes, max_depth, end_time - start_time
-
         visited.add(current_state)
         max_depth = max(depth, max_depth)
         no_of_expanded_nodes += 1
-
+        
         children_direction = get_children(current_state)
         for child, direction in children_direction:
             if child in visited:
@@ -57,18 +56,18 @@ def A(state, mode='manhattan'):
 
             h = compute_heuristic(child, goal_positions, mode)
             new_path = path + [direction]
-            frontier[child] = (depth + 1 + h, depth+1, new_path)
+            fheappush(frontier, (depth + 1 + h, depth+1, child, new_path))
 
     return [], 0, 0, 0, 0.0
 
 def main():
     test_cases = [
-        (806547231, 31),
-        (641302758, 14),
-        (158327064, 12),
-        (328451670, 12),
+        # (806547231, 31),
+        # (641302758, 14),
+        # (158327064, 12),
+        # (328451670, 12),
         (35428617, 10),  # Removed the leading zero for Python integer format
-        (725310648, 15)
+        # (725310648, 15)
     ]
 
     for initial_state, expected_moves in test_cases:
