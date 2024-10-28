@@ -41,6 +41,9 @@ def A(state, mode='manhattan'):
     while frontier.num_nodes:
 
         cost, depth, current_state, path = fheappop(frontier)
+
+        if current_state in visited and visited[current_state] <= depth:
+            continue
         
         if current_state == goal_state:
             end_time = time.time()

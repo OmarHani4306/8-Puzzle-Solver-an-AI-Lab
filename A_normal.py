@@ -27,21 +27,17 @@ def A(state, mode='manhattan'):
     }
 
     frontier = []
-    visited = {}
+    visited = set()
     max_depth = 0
     no_of_expanded_nodes = 0
     start_time = time.time()
 
-    initial_heuristic = compute_heuristic(state, goal_positions, mode)
-    heapq.heappush(frontier, (initial_heuristic, 0, state, []))  # path as a list
+    heapq.heappush(frontier, (0, 0, state, []))  # path as a list
 
     while frontier:
         cost, depth, current_state, path = heapq.heappop(frontier)
 
-        if current_state in visited and visited[current_state] <= depth:
-            continue
-
-        visited[current_state] = depth
+        visited.add(current_state)
         max_depth = max(depth, max_depth)
         no_of_expanded_nodes += 1
 
@@ -51,7 +47,7 @@ def A(state, mode='manhattan'):
 
         children_direction = get_children(current_state)
         for child, direction in children_direction:
-            if child in visited and visited[child] <= depth + 1:
+            if child in visited:
                 continue
 
             h = compute_heuristic(child, goal_positions, mode)
