@@ -39,6 +39,8 @@ def dfs(state):
 
         children_direction = get_children(current_state)
 
+        nodes_expanded += 1
+
         for child, direction in children_direction:
             if child in visited or child in forienter:
                 continue
