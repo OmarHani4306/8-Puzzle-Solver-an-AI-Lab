@@ -117,3 +117,12 @@ H~2~O
 ### Superscript
 
 X^2^
+
+
+<details>
+  <summary><i>Wow, so fancy</i></summary>
+    1. sfad <br>
+    2. asdfsdf   
+    3. sffad
+
+</details>
