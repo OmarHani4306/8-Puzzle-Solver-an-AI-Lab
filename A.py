@@ -97,10 +97,10 @@ def A(state, mode='manhattan'):
 
 def main():
     # Example initial state of the puzzle (as an integer)
-    # initial_state = 806547231  
+    initial_state = 806547231  
     # initial_state = 120345678  
     # initial_state = 35428617
-    initial_state = 725310648
+    # initial_state = 725310648
 
 
     # Run the A* algorithm
