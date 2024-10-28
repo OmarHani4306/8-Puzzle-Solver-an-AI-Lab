@@ -53,7 +53,7 @@ def run_algorithm(algorithm):
             puzzle_input += value
     puzzle = int(puzzle_input)
     if not check_game(puzzle):
-        display_final_results([], 0, 0, 0, 0.0, algorithm)
+        display_final_results([], 0, 0, 0, 0.0)
         display_message("The puzzle is not solvable.", error=True)
         return
     try:
@@ -63,17 +63,37 @@ def run_algorithm(algorithm):
             path, cost_of_path, nodes_expanded, search_depth, running_time = bfs(puzzle)
         elif algorithm == "IDS":
             path, cost_of_path, nodes_expanded, search_depth, running_time = ids(puzzle)
-        elif algorithm == "A*_Manhattan":
-            path, cost_of_path, nodes_expanded, search_depth, running_time = A(puzzle, heuristic="manhattan")
-        elif algorithm == "A*_Euclidean":
-            path, cost_of_path, nodes_expanded, search_depth, running_time = A(puzzle, heuristic="euclidean")
+        elif algorithm == "A* Manhattan":
+            path, cost_of_path, nodes_expanded, search_depth, running_time = A(puzzle, "manhattan")
+        elif algorithm == "A* Euclidean":
+            path, cost_of_path, nodes_expanded, search_depth, running_time = A(puzzle, "euclidean")
         else:
             display_message("Unknown algorithm selected.", error=True)
             return
-        animate_solution(path, puzzle_input, algorithm)
+
+        if algorithm not in ["DFS", "IDS"]:
+            animate_solution(path, puzzle_input, algorithm)  
+        else:
+            final_state = puzzle_input
+            for move in path:
+                zero_index = final_state.index('0')
+                zero_row, zero_col = divmod(zero_index, 3)
+                final_state_list = [list(final_state[i:i + 3]) for i in range(0, 9, 3)]
+                if move == "up" and zero_row > 0:
+                    final_state_list[zero_row][zero_col], final_state_list[zero_row - 1][zero_col] = final_state_list[zero_row - 1][zero_col], final_state_list[zero_row][zero_col]
+                elif move == "down" and zero_row < 2:
+                    final_state_list[zero_row][zero_col], final_state_list[zero_row + 1][zero_col] = final_state_list[zero_row + 1][zero_col], final_state_list[zero_row][zero_col]
+                elif move == "left" and zero_col > 0:
+                    final_state_list[zero_row][zero_col], final_state_list[zero_row][zero_col - 1] = final_state_list[zero_row][zero_col - 1], final_state_list[zero_row][zero_col]
+                elif move == "right" and zero_col < 2:
+                    final_state_list[zero_row][zero_col], final_state_list[zero_row][zero_col + 1] = final_state_list[zero_row][zero_col + 1], final_state_list[zero_row][zero_col]
+                final_state = ''.join(sum(final_state_list, []))
+            update_puzzle_display(final_state)
+
         display_final_results(path, search_depth, cost_of_path, nodes_expanded, running_time, algorithm)
     except Exception as e:
         display_message(f"Error: {str(e)}", error=True)
+
 
 def display_final_results(path, search_depth, cost_of_path, nodes_expanded, running_time, algorithm_name):
     results_text = f"""

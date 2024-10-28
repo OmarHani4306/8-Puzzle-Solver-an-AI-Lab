@@ -1,26 +1,46 @@
 import time
 
 from get_children import get_children
-
-# Note: get_children returns all available states that can be reached by moving the zero tile, along with the direction of the move required to reach each state.
-# The state is an integer representing the puzzle, for example, 123456780 or 170245683.
+from extract_path import extract_path
 
 def dfs(state):
-    goal_state = 12345678
+    goal_state = 12345678  
 
     if state == goal_state:
-        return [], 0, 0, 0, 0.0
+        return [], 0, 0, 0, 0.0 
+    
+    start = time.time()
 
-    #########################################################
-    # Implement the dfs algorithm logic starting from below #
-    #########################################################
+    stack     = [[[state, "", 0]]]  
+    visited   = set()  
+    forienter = set()  
 
+    while stack:  
+        current_path  = stack.pop()
+        current_state = current_path[-1][0]
+        current_cost  = current_path[-1][-1]
 
-    # outputs to return once implemented:
-    # 1. Return the list of directions, e.g., ["up", "left", "down"]
-    # 2. Return the cost of the path (integer representing depth to reach the goal)
-    # 3. Return the number of expanded nodes
-    # 4. Return the maximum search depth reached
-    # 5. Return the running time in seconds
+        visited.add(current_state)
 
-    return [], 0, 0, 0, 0.0
+        children_direction = get_children(current_state)
+
+        for child, direction in children_direction:
+            if child == goal_state:
+                end = time.time()
+                
+                running_time = end - start
+
+                path = extract_path(current_path + [[child, direction, current_cost + 1]])
+                nodes_expanded = len(visited)
+                
+                return path, current_cost + 1, nodes_expanded, current_cost + 1, running_time        
+
+            if child in visited or child in forienter:
+                continue
+            
+            new_path = current_path + [[child, direction, current_cost + 1]] 
+            
+            forienter.add(child)
+            stack.append(new_path)
+    
+    return None
