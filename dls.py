@@ -10,39 +10,36 @@ def dls(state, limit):
 
     start = time.time()
 
-    # Stack stores paths, each with [state, direction, cost]
-    stack = [[[state, "", 0]]]  
-    visited = set()  # Track visited states to avoid cycles
+    stack = [[[state, "", 0]]]  # LIFO stack
+    visited = set()  # Track visited states
+    max_depth = 0  # Initialize max depth
 
-    while stack:  # While there are states to explore
-        current_path = stack.pop()  # Pop the most recent path (LIFO)
+    while stack:
+        current_path = stack.pop()
         current_state = current_path[-1][0]
-        current_cost = current_path[-1][2]  # Track current cost
+        current_cost = current_path[-1][2]
 
-        visited.add(current_state)  # Mark the current state as visited
+        max_depth = max(max_depth, current_cost)  # Track max depth reached
+        visited.add(current_state)
 
-        # Skip paths that exceed the depth limit
-        if current_cost + 1 > limit:
-                continue  
-        
-        # Generate all valid children (next moves)
+        if current_cost + 1 > limit:  # Depth limit check
+            continue
+
         children_direction = get_children(current_state)
 
         for child, direction in children_direction:
-
-            if child == goal_state:  # If goal state is found
+            if child == goal_state:
                 end = time.time()
                 running_time = end - start
 
                 path = extract_path(current_path + [[child, direction, current_cost + 1]])
                 nodes_expanded = len(visited)
 
-                return path, current_cost + 1, nodes_expanded, current_cost + 1, running_time
+                return path, current_cost + 1, nodes_expanded, max_depth, running_time
 
-
-            # Add the new path to the stack with incremented cost
+            # Add the child path to the stack for further exploration
             new_path = current_path + [[child, direction, current_cost + 1]]
-            stack.append(new_path)  # Push to the stack for LIFO behavior
+            stack.append(new_path)
 
-    # If no solution is found within the limit
+    # If no solution is found
     return None
