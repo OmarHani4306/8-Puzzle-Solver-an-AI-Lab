@@ -61,11 +61,6 @@ def dfs(state):
 
     return None
 
-    while stack:  
-        current_path  = stack.pop()
-        current_state = current_path[-1][0]
-        current_cost  = current_path[-1][-1]
-
 def main():
     test_cases = [
         # (806547231, 31),
