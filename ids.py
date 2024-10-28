@@ -28,13 +28,13 @@ def ids(state):
 
 def main():
     test_cases = [
-        (806547231, 31),
-        # (123405678, 14),
-        # (641302758, 14),
-        # (158327064, 12),
-        # (328451670, 12),
-        # (35428617, 10),  # Removed the leading zero for Python integer format
-        # (725310648, 15)
+        # (806547231, 31),
+        (123405678, 14),
+        (641302758, 14),
+        (158327064, 12),
+        (328451670, 12),
+        (35428617, 10),  # Removed the leading zero for Python integer format
+        (725310648, 15)
     ]
 
     for initial_state, expected_moves in test_cases:
