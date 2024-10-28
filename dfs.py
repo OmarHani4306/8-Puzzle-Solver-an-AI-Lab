@@ -36,7 +36,7 @@ def dfs(state):
                 path = extract_path(current_path + [[child, direction, current_cost + 1]])
                 nodes_expanded = len(visited)
 
-                return path, current_cost + 1, nodes_expanded, max_depth, running_time
+                return path, current_cost + 1, nodes_expanded, max_depth + 1, running_time
 
             if child in visited:  # Skip if already visited
                 continue
