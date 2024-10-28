@@ -44,3 +44,30 @@ def bfs(state):
             queue.append(new_path)
     
     return None
+
+def main():
+    test_cases = [
+        # (806547231, 31),
+        (123405678, 40188),
+        # (641302758, 14),
+        # (158327064, 12),
+        # (328451670, 12),
+        # (35428617, 10),  # Removed the leading zero for Python integer format
+        # (725310648, 15)
+    ]
+
+    for initial_state, expected_moves in test_cases:
+        path, cost, no_of_expanded_nodes, max_depth, elapsed_time = bfs(initial_state)
+        
+        print(f"Initial state: {initial_state}")
+        print(f"Expected moves: {expected_moves}")
+        print(f"Path to solution: {path}")
+        print(f"Cost of path (number of moves): {cost}")
+        print(f"Number of expanded nodes: {no_of_expanded_nodes}")
+        print(f"Maximum search depth reached: {max_depth}")
+        print(f"Running time (seconds): {elapsed_time:.10f}")
+        print(f"Result matches expected: {cost == expected_moves}")
+        print("-" * 40)
+
+if __name__ == "__main__":
+    main()
