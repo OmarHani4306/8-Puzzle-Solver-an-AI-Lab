@@ -13,11 +13,15 @@ def dfs(state):
     # Use a stack-like structure: LIFO behavior by popping from the end
     stack = [[[state, "", 0]]]  
     visited = set()  # Track visited states to avoid cycles
+    max_depth = 0  # Initialize max depth
 
     while stack:  # While there are states to explore
         current_path = stack.pop()  # Pop from the end (LIFO)
         current_state = current_path[-1][0]
-        current_cost = current_path[-1][-1]
+        current_cost = current_path[-1][-1]  # Current path cost represents depth
+
+        # Update the max depth reached so far
+        max_depth = max(max_depth, current_cost)
 
         visited.add(current_state)  # Mark as visited
 
@@ -32,7 +36,7 @@ def dfs(state):
                 path = extract_path(current_path + [[child, direction, current_cost + 1]])
                 nodes_expanded = len(visited)
 
-                return path, current_cost + 1, nodes_expanded, current_cost + 1, running_time
+                return path, current_cost + 1, nodes_expanded, max_depth, running_time
 
             if child in visited:  # Skip if already visited
                 continue
@@ -41,5 +45,5 @@ def dfs(state):
             new_path = current_path + [[child, direction, current_cost + 1]]
             stack.append(new_path)  # Push to the end for LIFO behavior
 
-
-    return [], 0, 0, 0, 0.0
+    # If no solution is found
+    return [], 0, 0, max_depth, 0.0
