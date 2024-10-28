@@ -91,7 +91,7 @@ def A(state, mode='manhattan'):
 
         for child, direction in children_direction:
 
-            if child in visited or child in frointer:
+            if child in visited:
                 continue   
             
             # adding deacrese ket to optimize
