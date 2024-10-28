@@ -19,7 +19,7 @@ def dls(state, limit):
         current_state = current_path[-1][0]
         current_cost = current_path[-1][2]
 
-        max_depth = max(max_depth, current_cost)  # Track max depth reached
+        max_depth = max(max_depth, current_cost + 1)  # Track max depth reached
         visited.add(current_state)
 
         if current_cost + 1 > limit:  # Depth limit check
@@ -35,7 +35,7 @@ def dls(state, limit):
                 path = extract_path(current_path + [[child, direction, current_cost + 1]])
                 nodes_expanded = len(visited)
 
-                return path, current_cost + 1, nodes_expanded, max_depth + 1, running_time
+                return path, current_cost + 1, nodes_expanded, max_depth , running_time
 
             # Add the child path to the stack for further exploration
             new_path = current_path + [[child, direction, current_cost + 1]]
