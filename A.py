@@ -25,6 +25,8 @@ def compute_heuristic(current_state_int, goal_positions, heuristic_type='manhatt
     
     for i in range(0, 9):  
         current_index = int(current_state_str[i])  
+        if current_index == 0:
+            continue
         current_pos = goal_positions[current_index]  
         goal_pos = goal_positions[i]  
         if heuristic_type == 'manhattan':
